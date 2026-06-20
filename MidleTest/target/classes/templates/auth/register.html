@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head('Đăng ký')}"></head>
+<body>
+<div class="ambient-bg"></div>
+<nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+<main class="container app-shell">
+  <section class="panel form-shell mx-auto" style="max-width:560px;">
+    <h2 class="mb-3">Đăng ký tài khoản</h2>
+    <p class="text-muted">Hệ thống sẽ dùng email làm tên đăng nhập.</p>
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+    <form method="post" th:action="@{/register}">
+      <div class="mb-3"><label class="form-label">Họ tên</label><input name="fullName" class="form-control" required></div>
+      <div class="mb-3"><label class="form-label">Email Gmail</label><input type="email" name="email" class="form-control" required></div>
+      <div class="mb-3"><label class="form-label">Số điện thoại</label><input name="phone" class="form-control" placeholder="+84901234567" pattern="[+0-9\\s]{9,20}" required></div>
+      <div class="mb-3"><label class="form-label">Mật khẩu</label><input type="password" name="password" class="form-control" required></div>
+      <div class="mb-3"><label class="form-label">Xác nhận mật khẩu</label><input type="password" name="confirmPassword" class="form-control" required></div>
+      <button class="btn btn-primary" type="submit">Đăng ký</button>
+      <a class="btn btn-outline-secondary" th:href="@{/login}">Đăng nhập</a>
+    </form>
+  </section>
+</main>
+<footer th:replace="~{fragments/common :: footer}"></footer>
+</body>
+</html>

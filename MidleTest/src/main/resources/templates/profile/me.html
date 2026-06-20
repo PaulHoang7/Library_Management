@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head('Trang cá nhân')}"></head>
+<body>
+<div class="ambient-bg"></div>
+<nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+
+<main class="container app-shell">
+  <section class="page-head">
+    <div>
+      <h2 class="page-title">Trang cá nhân</h2>
+      <p class="page-subtitle">Theo dõi sách đang mượn và cập nhật thông tin liên hệ.</p>
+    </div>
+  </section>
+
+  <section class="panel mb-3">
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <div>
+        <div class="book-meta">Tài khoản</div>
+        <strong th:text="${(currentUserFullName != null and !#strings.isEmpty(currentUserFullName)) ? currentUserFullName : currentUser}">User</strong>
+        <div class="book-meta" th:text="${readerEmail}">user@email.com</div>
+        <div class="book-meta">
+          SĐT:
+          <strong th:text="${reader != null and reader.phone != null and !#strings.isEmpty(reader.phone) ? reader.phone : 'Chưa cập nhật'}">Chưa cập nhật</strong>
+        </div>
+      </div>
+      <div class="status-pill status-borrowed">
+        Đang mượn: <strong th:text="${activeBorrowCount}">0</strong> cuốn
+      </div>
+    </div>
+
+    <hr>
+    <form class="row g-2 align-items-end" method="post" th:action="@{/me/phone}">
+      <div class="col-md-6">
+        <label class="form-label">Cập nhật số điện thoại</label>
+        <input
+            name="phone"
+            class="form-control"
+            placeholder="+84901234567"
+            pattern="[+0-9\\s]{9,20}"
+            th:value="${reader != null ? reader.phone : ''}"
+            required>
+      </div>
+      <div class="col-md-auto">
+        <button class="btn btn-primary" type="submit">Lưu số điện thoại</button>
+      </div>
+    </form>
+    <div class="form-text mt-2">Bạn cần có số điện thoại hợp lệ để gửi yêu cầu mượn sách.</div>
+  </section>
+
+  <section class="panel mb-3">
+    <h3 class="mb-3">Sách đang mượn</h3>
+    <div class="table-wrap">
+      <table class="table table-hover align-middle">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Tên sách</th>
+          <th>Ngày mượn</th>
+          <th>Hạn trả</th>
+          <th>Trạng thái</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(activeBorrows)}">
+          <td colspan="5">Bạn chưa mượn cuốn nào.</td>
+        </tr>
+        <tr th:each="b, iter : ${activeBorrows}">
+          <td th:text="${iter.count}">1</td>
+          <td th:text="${b.bookTitle}">Tên sách</td>
+          <td th:text="${b.borrowDate}">2026-01-01</td>
+          <td th:text="${b.dueDate != null ? b.dueDate : '-'}">2026-01-15</td>
+          <td>
+            <span class="status-pill status-overdue" th:if="${b.overdue}">Quá hạn</span>
+            <span class="status-pill status-borrowed" th:if="${!b.overdue}">Đang mượn</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3 class="mb-3">Lịch sử gần đây</h3>
+    <div class="table-wrap">
+      <table class="table table-hover align-middle">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Tên sách</th>
+          <th>Ngày mượn</th>
+          <th>Hạn trả</th>
+          <th>Ngày trả</th>
+          <th>Trạng thái</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(recentBorrows)}">
+          <td colspan="6">Chưa có dữ liệu mượn/trả.</td>
+        </tr>
+        <tr th:each="b, iter : ${recentBorrows}">
+          <td th:text="${iter.count}">1</td>
+          <td th:text="${b.bookTitle}">Tên sách</td>
+          <td th:text="${b.borrowDate}">2026-01-01</td>
+          <td th:text="${b.dueDate != null ? b.dueDate : '-'}">2026-01-15</td>
+          <td th:text="${b.returnDate != null ? b.returnDate : '-'}">-</td>
+          <td>
+            <span class="status-pill status-returned" th:if="${b.status == 'returned'}">Đã trả</span>
+            <span class="status-pill status-overdue" th:if="${b.status == 'borrowed' and b.overdue}">Quá hạn</span>
+            <span class="status-pill status-borrowed" th:if="${b.status == 'borrowed' and !b.overdue}">Đang mượn</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/common :: footer}"></footer>
+</body>
+</html>

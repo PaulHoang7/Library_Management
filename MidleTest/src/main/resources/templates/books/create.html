@@ -1,0 +1,10 @@
+﻿<!DOCTYPE html><html lang="vi" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/common :: head('Thêm sách')}"></head><body>
+<div class="ambient-bg"></div><nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+<main class="container app-shell"><section class="panel form-shell"><h2>Thêm sách</h2><form method="post" th:action="@{/books}" th:object="${book}">
+<div class="mb-3"><label class="form-label">Tiêu đề</label><input class="form-control" th:field="*{title}" required></div>
+<div class="mb-3"><label class="form-label">Tác giả</label><input class="form-control" th:field="*{author}" required></div>
+<div class="mb-3"><label class="form-label">Thể loại</label><select class="form-select" th:field="*{categoryId}"><option value="">-- Chọn --</option><option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}"></option></select></div>
+<div class="mb-3"><label class="form-label">Số lượng</label><input type="number" min="0" class="form-control" th:field="*{quantity}" required></div>
+<div class="mb-3"><label class="form-label">Link ảnh bìa</label><input class="form-control" th:field="*{coverImage}"><div class="form-text">Để trống, hệ thống sẽ tự tìm ảnh bìa theo tiêu đề và tác giả.</div></div>
+<button class="btn btn-primary">Lưu</button> <a class="btn btn-outline-secondary" th:href="@{/books}">Quay lại</a>
+</form></section></main><footer th:replace="~{fragments/common :: footer}"></footer></body></html>

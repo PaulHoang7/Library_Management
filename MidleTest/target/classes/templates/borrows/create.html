@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head('Yêu cầu mượn sách')}"></head>
+<body>
+<div class="ambient-bg"></div>
+<nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+
+<main class="container app-shell">
+  <section class="page-head">
+    <div>
+      <h2 class="page-title" th:text="${requestMode} ? 'Yêu cầu mượn sách' : 'Tạo phiếu mượn (ADMIN)'">Yêu cầu mượn sách</h2>
+      <p class="page-subtitle" th:text="${requestMode} ? 'Bạn đang gửi yêu cầu mượn dưới tài khoản của mình.' : 'ADMIN tạo phiếu mượn cho độc giả.'">Bạn cần đăng nhập để tạo yêu cầu mượn sách.</p>
+    </div>
+  </section>
+
+  <section class="panel form-shell">
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert alert-warning" th:if="${!hasAvailableBooks}">
+      Hiện tại tất cả sách đều đã hết, chưa thể tạo phiếu mượn.
+    </div>
+    <form th:action="${requestMode} ? @{/borrow/request} : @{/borrows}" method="post" th:object="${borrow}">
+      <div class="mb-3" th:if="${requestMode}">
+        <label class="form-label">Người mượn</label>
+        <input type="text" class="form-control" th:value="${currentUserFullName != null ? currentUserFullName : currentUser}" readonly>
+        <input type="hidden" th:field="*{readerId}">
+      </div>
+
+      <div class="mb-3" th:if="${!requestMode}">
+        <label for="readerId" class="form-label">Độc giả</label>
+        <select id="readerId" class="form-select" th:field="*{readerId}" required>
+          <option value="">-- Chọn độc giả --</option>
+          <option th:each="reader : ${readers}" th:value="${reader.id}" th:text="${reader.name + ' (' + reader.email + ')'}"></option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="bookId" class="form-label">Sách</label>
+        <select id="bookId" class="form-select" th:field="*{bookId}" required>
+          <option value="">-- Chọn sách --</option>
+          <option
+              th:each="book : ${books}"
+              th:value="${book.id}"
+              th:disabled="${book.quantity <= 0}"
+              th:text="${book.title + ' - ' + book.author + ' (Còn: ' + book.quantity + (book.quantity <= 0 ? ', Hết sách' : '') + ')'}"></option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="borrowDate" class="form-label">Ngày mượn</label>
+        <input id="borrowDate" type="date" class="form-control" th:field="*{borrowDate}" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="borrowDays" class="form-label">Số ngày mượn (1-30)</label>
+        <input id="borrowDays" type="number" min="1" max="30" class="form-control" th:field="*{borrowDays}" required>
+        <div class="form-text">Hệ thống sẽ tự tính hạn trả theo số ngày bạn chọn.</div>
+      </div>
+
+      <div class="form-actions">
+        <button
+            type="submit"
+            class="btn btn-primary"
+            th:disabled="${!hasAvailableBooks}"
+            th:text="${requestMode} ? 'Gửi yêu cầu mượn' : 'Tạo phiếu mượn'">Gửi yêu cầu mượn</button>
+        <a th:href="${requestMode} ? @{/catalog} : @{/borrows}" class="btn btn-outline-secondary" th:text="${requestMode} ? 'Quay lại danh mục' : 'Quay lại quản lý mượn trả'">Quay lại</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/common :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

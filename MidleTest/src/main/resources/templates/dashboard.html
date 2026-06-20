@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head('Dashboard')}"></head>
+<body>
+<div class="ambient-bg"></div>
+<nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+
+<main class="container app-shell">
+  <section class="page-head">
+    <div>
+      <h2 class="page-title">Bảng điều khiển ADMIN</h2>
+      <p class="page-subtitle">Tổng quan nhanh tình hình mượn/trả và tồn kho thư viện.</p>
+    </div>
+  </section>
+
+  <section class="row g-3 mb-2">
+    <div class="col-sm-6 col-xl-3">
+      <div class="panel kpi-card">
+        <div class="kpi-label">Tổng sách</div>
+        <div class="kpi-value" th:text="${totalBooks}">0</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="panel kpi-card">
+        <div class="kpi-label">Tổng độc giả</div>
+        <div class="kpi-value" th:text="${totalReaders}">0</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="panel kpi-card">
+        <div class="kpi-label">Đang mượn</div>
+        <div class="kpi-value" th:text="${totalBorrowed}">0</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="panel kpi-card kpi-alert">
+        <div class="kpi-label">Quá hạn</div>
+        <div class="kpi-value" th:text="${totalOverdue}">0</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="row g-3 mt-1">
+    <div class="col-lg-8">
+      <section class="panel">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h3 class="mb-0">Phiếu mượn gần đây</h3>
+          <a class="btn btn-sm btn-outline-primary" th:href="@{/borrows}">Xem tất cả</a>
+        </div>
+        <div class="table-wrap">
+          <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>Độc giả</th>
+              <th>Sách</th>
+              <th>Ngày mượn</th>
+              <th>Hạn trả</th>
+              <th>Trạng thái</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(recentBorrows)}">
+              <td colspan="6">Chưa có dữ liệu mượn/trả.</td>
+            </tr>
+            <tr th:each="b, iter : ${recentBorrows}">
+              <td th:text="${iter.count}">1</td>
+              <td th:text="${b.readerName}">Người mượn</td>
+              <td th:text="${b.bookTitle}">Tên sách</td>
+              <td th:text="${b.borrowDate}">2026-03-30</td>
+              <td th:text="${b.dueDate != null ? b.dueDate : '-'}">2026-04-20</td>
+              <td>
+                <span class="status-pill status-returned" th:if="${b.status == 'returned'}">Đã trả</span>
+                <span class="status-pill status-overdue" th:if="${b.status == 'borrowed' and b.overdue}">Quá hạn</span>
+                <span class="status-pill status-borrowed" th:if="${b.status == 'borrowed' and !b.overdue}">Đang mượn</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-lg-4">
+      <section class="panel mb-3">
+        <h3 class="mb-2">Đang quá hạn</h3>
+        <div th:if="${#lists.isEmpty(overdueBorrows)}" class="book-meta">Hiện chưa có phiếu quá hạn.</div>
+        <div th:each="b : ${overdueBorrows}" class="mini-row">
+          <div>
+            <div class="mini-title" th:text="${b.bookTitle}">Tên sách</div>
+            <div class="mini-meta" th:text="${b.readerName + ' • Hạn trả ' + (b.dueDate != null ? b.dueDate : '-') }">Reader</div>
+          </div>
+          <span class="status-pill status-overdue">Quá hạn</span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3 class="mb-2">Sách sắp hết</h3>
+        <div th:if="${#lists.isEmpty(lowStockBooks)}" class="book-meta">Tồn kho ổn định, chưa có sách sắp hết.</div>
+        <div th:each="book : ${lowStockBooks}" class="mini-row">
+          <div>
+            <div class="mini-title" th:text="${book.title}">Tên sách</div>
+            <div class="mini-meta" th:text="${book.author}">Tác giả</div>
+          </div>
+          <span class="status-pill" th:classappend="${book.quantity <= 0} ? 'status-overdue' : 'status-borrowed'" th:text="${'Còn ' + book.quantity}">Còn 1</span>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/common :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

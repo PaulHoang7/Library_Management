@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(pageTitle)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${pageTitle != null ? pageTitle + ' | Library' : 'Library'}">Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:fragment="nav(activePath)" class="navbar navbar-expand-lg top-nav">
+  <div class="container">
+    <a class="navbar-brand nav-brand" th:href="@{/}">
+      <span class="brand-leaf"></span>
+      Library
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav nav-pills-shell">
+        <li class="nav-item"><a class="nav-link" th:classappend="${activePath == '/'} ? ' active' : ''" th:href="@{/}">Trang chủ</a></li>
+        <li class="nav-item"><a class="nav-link" th:classappend="${activePath == '/catalog'} ? ' active' : ''" th:href="@{/catalog}">Danh mục sách</a></li>
+
+        <li class="nav-item" th:if="${currentUser != null}">
+          <a class="nav-link" th:classappend="${activePath == '/borrow/request'} ? ' active' : ''" th:href="@{/borrow/request}">Mượn sách</a>
+        </li>
+
+        <li class="nav-item" th:if="${isAdmin}"><a class="nav-link" th:classappend="${activePath == '/dashboard'} ? ' active' : ''" th:href="@{/dashboard}">Dashboard</a></li>
+        <li class="nav-item" th:if="${isAdmin}"><a class="nav-link" th:classappend="${#strings.startsWith(activePath, '/books')} ? ' active' : ''" th:href="@{/books}">QL Sách</a></li>
+        <li class="nav-item" th:if="${isAdmin}"><a class="nav-link" th:classappend="${#strings.startsWith(activePath, '/readers')} ? ' active' : ''" th:href="@{/readers}">QL Độc giả</a></li>
+        <li class="nav-item" th:if="${isAdmin}"><a class="nav-link" th:classappend="${activePath == '/borrows'} ? ' active' : ''" th:href="@{/borrows}">QL Mượn trả</a></li>
+      </ul>
+
+      <div class="ms-auto d-flex align-items-center gap-2 auth-slot">
+        <a class="btn btn-sm btn-outline-primary" th:if="${currentUser == null}" th:href="@{/login}">Đăng nhập</a>
+        <a class="btn btn-sm btn-primary" th:if="${currentUser == null}" th:href="@{/register}">Đăng ký</a>
+
+        <details class="account-menu" th:if="${currentUser != null}">
+          <summary class="account-trigger">
+            <span class="account-avatar"
+                  th:text="${#strings.substring((currentUserFullName != null and !#strings.isEmpty(currentUserFullName)) ? currentUserFullName : currentUser, 0, 1)}">U</span>
+            <span class="account-name"
+                  th:text="${(currentUserFullName != null and !#strings.isEmpty(currentUserFullName)) ? currentUserFullName : currentUser}">User</span>
+            <span class="role-chip" th:if="${currentRole != null}" th:text="${currentRole}">USER</span>
+          </summary>
+          <div class="account-panel">
+            <div class="account-header">
+              <div class="account-head-name"
+                   th:text="${(currentUserFullName != null and !#strings.isEmpty(currentUserFullName)) ? currentUserFullName : currentUser}">Tên người dùng</div>
+              <div class="account-head-meta" th:text="${currentUser}">email@example.com</div>
+              <div class="account-head-meta">Đang mượn: <strong th:text="${currentBorrowedCount}">0</strong> cuốn</div>
+            </div>
+
+            <a class="account-item" th:href="@{/me}">
+              <span>Trang cá nhân</span>
+              <small>Xem sách đang mượn</small>
+            </a>
+            <a class="account-item" th:href="@{/borrow/request}">
+              <span>Mượn sách</span>
+              <small>Tạo yêu cầu mới</small>
+            </a>
+            <a class="account-item" th:if="${isAdmin}" th:href="@{/dashboard}">
+              <span>Dashboard</span>
+              <small>Khu vực quản lý</small>
+            </a>
+            <a class="account-item account-logout" th:href="@{/logout}">
+              <span>Đăng xuất</span>
+              <small>Kết thúc phiên làm việc</small>
+            </a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<footer th:fragment="footer" class="container page-footer">
+  <p>Library - Spring Boot + Thymeleaf + MySQL</p>
+</footer>
+</body>
+</html>

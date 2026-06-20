@@ -1,0 +1,8 @@
+﻿<!DOCTYPE html><html lang="vi" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/common :: head('Sửa độc giả')}"></head><body>
+<div class="ambient-bg"></div><nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+<main class="container app-shell"><section class="panel form-shell"><h2>Sửa độc giả</h2><form method="post" th:action="@{/readers/update/{id}(id=${reader.id})}" th:object="${reader}">
+<div class="mb-3"><label class="form-label">Tên</label><input class="form-control" th:field="*{name}" required></div>
+<div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" th:field="*{email}" required></div>
+<div class="mb-3"><label class="form-label">SĐT</label><input class="form-control" th:field="*{phone}"></div>
+<button class="btn btn-primary">Cập nhật</button> <a class="btn btn-outline-secondary" th:href="@{/readers}">Quay lại</a>
+</form></section></main><footer th:replace="~{fragments/common :: footer}"></footer></body></html>

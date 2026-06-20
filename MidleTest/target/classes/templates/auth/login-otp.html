@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head('Xác thực OTP')}"></head>
+<body>
+<div class="ambient-bg"></div>
+<nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+<main class="container app-shell">
+  <section class="panel form-shell mx-auto" style="max-width:520px;">
+    <h2 class="mb-3">Xác thực OTP</h2>
+    <p class="text-muted">Nhập mã OTP 6 số đã gửi đến email của bạn để hoàn tất đăng nhập.</p>
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+
+    <form method="post" th:action="@{/login/otp}">
+      <div class="mb-3">
+        <label class="form-label">Mã OTP</label>
+        <input name="otp" class="form-control" maxlength="6" minlength="6" pattern="[0-9]{6}" required>
+      </div>
+      <button class="btn btn-primary" type="submit">Xác nhận đăng nhập</button>
+      <a class="btn btn-outline-secondary" th:href="@{/login}">Quay lại</a>
+    </form>
+
+    <form class="mt-3" method="post" th:action="@{/login/otp/resend}">
+      <button class="btn btn-link p-0" type="submit">Gửi lại mã OTP</button>
+    </form>
+  </section>
+</main>
+<footer th:replace="~{fragments/common :: footer}"></footer>
+</body>
+</html>

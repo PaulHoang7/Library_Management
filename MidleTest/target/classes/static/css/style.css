@@ -1,0 +1,187 @@
+﻿:root {
+  --bg: #f3f7ff;
+  --panel: #ffffff;
+  --text: #1f2d3d;
+  --primary: #1f6feb;
+  --secondary: #0e4aa6;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+}
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top right, #d9e8ff 0%, transparent 45%), radial-gradient(circle at bottom left, #e9f0ff 0%, transparent 35%);
+  z-index: -1;
+  overflow: hidden;
+}
+.ambient-bg::before,
+.ambient-bg::after {
+  content: "";
+  position: absolute;
+  inset: -12% -6%;
+  pointer-events: none;
+}
+.ambient-bg::before {
+  background:
+    radial-gradient(24px 34px at 10% 15%, rgba(67, 152, 96, .18) 0 58%, transparent 60%),
+    radial-gradient(20px 30px at 30% 70%, rgba(92, 182, 120, .16) 0 58%, transparent 60%),
+    radial-gradient(23px 33px at 65% 25%, rgba(63, 146, 94, .15) 0 58%, transparent 60%),
+    radial-gradient(18px 28px at 86% 62%, rgba(103, 190, 128, .14) 0 58%, transparent 60%);
+  transform: rotate(-16deg);
+}
+.ambient-bg::after {
+  background:
+    radial-gradient(20px 30px at 22% 40%, rgba(90, 171, 117, .14) 0 58%, transparent 60%),
+    radial-gradient(16px 26px at 52% 78%, rgba(81, 163, 110, .13) 0 58%, transparent 60%),
+    radial-gradient(21px 31px at 74% 48%, rgba(72, 155, 103, .13) 0 58%, transparent 60%);
+  transform: rotate(12deg);
+}
+.top-nav { background: rgba(255,255,255,.9); backdrop-filter: blur(6px); border-bottom: 1px solid #e8eefc; }
+.nav-brand { font-family: 'Merriweather', serif; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+.brand-dot { width: 10px; height: 10px; background: var(--primary); border-radius: 999px; display: inline-block; }
+.brand-leaf {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background: linear-gradient(145deg, #5ec07c, #2b8d52);
+  border-radius: 0 100% 0 100%;
+  transform: rotate(-45deg);
+  position: relative;
+  box-shadow: 0 2px 6px rgba(43, 141, 82, .35);
+}
+.brand-leaf::after {
+  content: "";
+  position: absolute;
+  width: 1.5px;
+  height: 11px;
+  background: rgba(240, 255, 245, .85);
+  left: 6px;
+  top: 1px;
+  transform: rotate(45deg);
+  border-radius: 999px;
+}
+.nav-pills-shell { gap: .5rem; }
+.nav-link.active { background: #e8f0ff; border-radius: 8px; }
+.app-shell { padding-top: 2rem; padding-bottom: 2rem; }
+.panel { background: var(--panel); border-radius: 14px; border: 1px solid #e6edfb; box-shadow: 0 12px 30px rgba(20,60,120,.08); padding: 1rem; }
+.hero { padding: 2rem; }
+.page-title { font-family: 'Merriweather', serif; font-weight: 900; margin: 0; }
+.page-subtitle { color: #53627a; margin-top: .5rem; }
+.hero-actions { display: flex; gap: .75rem; margin-top: 1rem; flex-wrap: wrap; }
+.page-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+.book-card { padding: 0; overflow: hidden; }
+.book-cover { width: 100%; height: 220px; object-fit: cover; }
+.book-info { padding: 1rem; }
+.book-meta { margin: .25rem 0; color: #566581; }
+.book-actions { margin-top: .75rem; display: flex; gap: .5rem; flex-wrap: wrap; }
+.form-shell { max-width: 860px; margin: 0 auto; }
+.table-wrap { overflow-x: auto; }
+.table-cover { width: 56px; height: 76px; object-fit: cover; border-radius: 8px; border: 1px solid #d9e5ff; }
+.status-pill { font-size: .8rem; padding: .25rem .6rem; border-radius: 999px; display: inline-block; }
+.status-borrowed { background: #e7f1ff; color: #1155b2; }
+.status-returned { background: #e9f8ee; color: #1e7f3f; }
+.status-overdue { background: #ffe8e8; color: #af2d2d; }
+.user-chip, .role-chip { font-size: .78rem; border-radius: 999px; padding: .2rem .55rem; }
+.user-chip { background: #edf3ff; }
+.role-chip { background: #dce9ff; color: #0b4db3; font-weight: 700; }
+.account-menu { position: relative; }
+.account-trigger {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .35rem .55rem;
+  border-radius: 999px;
+  border: 1px solid #dce7ff;
+  background: #ffffff;
+  cursor: pointer;
+}
+.account-trigger::-webkit-details-marker { display: none; }
+.account-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2a6ee8, #0f4db1);
+  color: #fff;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+.account-name {
+  font-size: .86rem;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(330px, 92vw);
+  background: linear-gradient(180deg, #20252d 0%, #1a1f27 100%);
+  border: 1px solid #2a3342;
+  border-radius: 14px;
+  box-shadow: 0 18px 30px rgba(10, 16, 28, .38);
+  padding: .8rem;
+  z-index: 30;
+}
+.account-header {
+  padding: .7rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  margin-bottom: .55rem;
+}
+.account-head-name { color: #eef3ff; font-weight: 700; font-size: .95rem; }
+.account-head-meta { color: #9aabc5; font-size: .8rem; margin-top: .15rem; }
+.account-item {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  text-decoration: none;
+  color: #e7eefc;
+  padding: .6rem .7rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+.account-item span { font-weight: 600; }
+.account-item small { color: #9db0cf; }
+.account-item:hover {
+  color: #ffffff;
+  border-color: #35455e;
+  background: rgba(255,255,255,.04);
+}
+.account-logout span { color: #ffc7c7; }
+.account-logout small { color: #d8a3a3; }
+.kpi-card { padding: 1rem 1.1rem; }
+.kpi-label { color: #5c6f8f; font-size: .92rem; margin-bottom: .45rem; }
+.kpi-value { font-family: 'Merriweather', serif; font-size: 1.9rem; font-weight: 900; line-height: 1; color: #183c78; }
+.kpi-alert { border-color: #ffd7d7; background: linear-gradient(180deg, #fff8f8 0%, #ffffff 100%); }
+.kpi-alert .kpi-value { color: #9a2b2b; }
+.mini-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .8rem;
+  padding: .55rem .05rem;
+  border-bottom: 1px dashed #e3eaf8;
+}
+.mini-row:last-child { border-bottom: none; padding-bottom: 0; }
+.mini-title { font-weight: 600; color: #273753; }
+.mini-meta { font-size: .82rem; color: #637594; margin-top: .08rem; }
+.page-footer { padding: 1.5rem 0 2rem; color: #6a7a93; }
+@media (max-width: 768px) {
+  .page-head { display: block; }
+  .page-head .btn { margin-top: .75rem; }
+  .account-name { max-width: 95px; }
+  .account-panel { right: -8px; }
+}

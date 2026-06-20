@@ -1,0 +1,9 @@
+﻿<!DOCTYPE html><html lang="vi" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/common :: head('Quản lý mượn trả')}"></head><body>
+<div class="ambient-bg"></div><nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+<main class="container app-shell"><div class="alert alert-success" th:if="${success}" th:text="${success}"></div><div class="alert alert-danger" th:if="${error}" th:text="${error}"></div><section class="page-head"><div><h2 class="page-title">Quản lý mượn trả</h2></div><a class="btn btn-primary" th:href="@{/borrows/create}">+ Tạo phiếu mượn</a></section>
+<section class="panel"><div class="table-wrap"><table class="table table-hover align-middle"><thead><tr><th>#</th><th>Độc giả</th><th>Sách</th><th>Ngày mượn</th><th>Hạn trả</th><th>Ngày trả</th><th>Trạng thái</th><th></th></tr></thead><tbody>
+<tr th:if="${#lists.isEmpty(borrows)}"><td colspan="8">Chưa có phiếu mượn.</td></tr>
+<tr th:each="b,iter:${borrows}"><td th:text="${iter.count}"></td><td th:text="${b.readerName}"></td><td th:text="${b.bookTitle}"></td><td th:text="${b.borrowDate}"></td><td th:text="${b.dueDate != null ? b.dueDate : '-'}"></td><td th:text="${b.returnDate != null ? b.returnDate : '-'}"></td>
+<td><span class="status-pill status-overdue" th:if="${b.status == 'borrowed' and b.overdue}">Quá hạn</span><span class="status-pill status-borrowed" th:if="${b.status == 'borrowed' and !b.overdue}">Đang mượn</span><span class="status-pill status-returned" th:if="${b.status == 'returned'}">Đã trả</span></td>
+<td><form th:if="${b.status == 'borrowed'}" method="post" th:action="@{/borrows/return/{id}(id=${b.id})}" onsubmit="return confirm('Xác nhận trả sách?')"><button class="btn btn-sm btn-success">Trả sách</button></form></td></tr>
+</tbody></table></div></section></main><footer th:replace="~{fragments/common :: footer}"></footer></body></html>

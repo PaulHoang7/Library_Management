@@ -1,0 +1,8 @@
+﻿<!DOCTYPE html><html lang="vi" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/common :: head('QL Độc giả')}"></head><body>
+<div class="ambient-bg"></div><nav th:replace="~{fragments/common :: nav(${currentPath})}"></nav>
+<main class="container app-shell"><section class="page-head"><div><h2 class="page-title">Quản lý độc giả</h2></div><a class="btn btn-primary" th:href="@{/readers/create}">+ Thêm độc giả</a></section>
+<section class="panel"><div class="table-wrap"><table class="table table-hover"><thead><tr><th>#</th><th>Tên</th><th>Email</th><th>SĐT</th><th></th></tr></thead><tbody>
+<tr th:each="r,iter:${readers}"><td th:text="${iter.count}"></td><td th:text="${r.name}"></td><td th:text="${r.email}"></td><td th:text="${r.phone}"></td><td>
+<a class="btn btn-sm btn-outline-primary" th:href="@{/readers/edit/{id}(id=${r.id})}">Sửa</a>
+<form class="d-inline" method="post" th:action="@{/readers/delete/{id}(id=${r.id})}" onsubmit="return confirm('Xóa độc giả này?')"><button class="btn btn-sm btn-outline-danger">Xóa</button></form>
+</td></tr></tbody></table></div></section></main><footer th:replace="~{fragments/common :: footer}"></footer></body></html>
