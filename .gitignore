@@ -1,50 +1,50 @@
-# Maven
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
+# # Maven
+# target/
+# pom.xml.tag
+# pom.xml.releaseBackup
+# pom.xml.versionsBackup
+# pom.xml.next
+# release.properties
+# dependency-reduced-pom.xml
+# buildNumber.properties
+# .mvn/timing.properties
+# .mvn/wrapper/maven-wrapper.jar
 
-# IDE
-.idea/
-.vscode/
-*.iml
-*.iws
-*.ipr
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
+# # IDE
+# .idea/
+# .vscode/
+# *.iml
+# *.iws
+# *.ipr
+# *.swp
+# *.swo
+# *~
+# .DS_Store
+# Thumbs.db
 
-# Logs
-*.log
-logs/
+# # Logs
+# *.log
+# logs/
 
-# Compiled files
-*.class
-*.jar
-*.exe
+# # Compiled files
+# *.class
+# *.jar
+# *.exe
 
-# Environment and secrets
-.env
-.env.local
-.env.*.local
-application-*.properties
-!application.properties
+# # Environment and secrets
+# .env
+# .env.local
+# .env.*.local
+# application-*.properties
+# !application.properties
 
-# OS files
-.DS_Store
-.AppleDouble
-.LSOverride
+# # OS files
+# .DS_Store
+# .AppleDouble
+# .LSOverride
 
-# Other
-node_modules/
-dist/
-build/
-out/
+# # Other
+# node_modules/
+# dist/
+# build/
+# out/
